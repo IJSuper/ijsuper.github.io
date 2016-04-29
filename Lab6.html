@@ -65,31 +65,18 @@
     
     <script>
    
-    var cities = new L.LayerGroup();
-    L.marker([40.596172, -75.472072]).bindPopup('<b>Allentown - </b> Population: 119,355').addTo(cities);
-    L.marker([40.62665, -75.367908]).bindPopup('<b>Bethlehem - </b> Population: 76,283').addTo(cities);
-    L.marker([42.116503, -80.073055]).bindPopup('<b>Erie - </b> Population: 101,513').addTo(cities);
-    L.marker([40.264032, -76.880679]).bindPopup('<b>Harrisburg - </b> Population: 50,144').addTo(cities);
-    L.marker([40.042144, -76.301009]).bindPopup('<b>Lancaster - </b> Population: 60,492').addTo(cities);
-    L.marker([40.143491, -74.85497]).bindPopup('<b>Levittown - </b> Population: 52,075').addTo(cities);
-    L.marker([40.007728, -75.133916]).bindPopup('<b>Philadelphia - </b> Population: 1,548,598').addTo(cities);
-    L.marker([40.439485, -79.976316]).bindPopup('<b>Pittsburgh - </b> Population: 304,633').addTo(cities);
-    L.marker([40.339938, -75.926615]).bindPopup('<b>Reading - </b> Population: 89,019').addTo(cities);
-    L.marker([41.404399, -75.664916]).bindPopup('<b>Scranton - </b> Population: 75,004').addTo(cities);
+
     
-    var Attr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-			Url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoiamthcm1hejYiLCJhIjoiY2ltM3ZjNTdjMDAwNXR6bTZ1NXU4M3A3NyJ9.b-8StdJWFpLK7LrLLermJg';
+    var Thunderforest_Landscape = L.tileLayer('http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png', {
+	attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+});
 	
-	var light = L.tileLayer(Url, {id: 'mapbox.light', attribution: Attr});
-	var dark = L.tileLayer(Url, {id: 'mapbox.dark', attribution: Attr});
-    var map = L.map('map', {center: [40.917956, -77.552434],
-    				zoom: 8,
-    				layers: [light, dark, cities]});
-    				
-    var baseMaps = {'Light' : light,
-    			'Dark': dark};
+	var map = L.map('map', {
+  scrollWheelZoom: true,
+  center: [13.1578565, 100.904011],
+  zoom: 9,
+})
+map.addLayer(Thunderforest_Landscape);
     				
     var overlay = {'Major Cities': cities};
     
