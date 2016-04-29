@@ -12,13 +12,15 @@
   		font-size:50px;
   		font-weight: bold;
   		color: white;
-  		
+  		background-color: black;
+  		background-clip: content-box;
   	}
   	h2 { font-family: Arial;
   		font-size: 30px;
   		font-weight: bold;
   		color: white;
-  	
+  		background-color: black;
+  		background-clip: content-box;
   	}
   		
   	#map {width:1100px; height:800px;}
@@ -63,7 +65,6 @@
     
     <script>
    
-
     
     var Thunderforest_Landscape = L.tileLayer('http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png', {
 	attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -82,7 +83,6 @@ L.geoJson(counties, {
     		}).addTo(map);
     
 //counties 
-
     var info = L.control();
     	info.onAdd = function (map)
     			{this._div = L.DomUtil.create('div', 'info');
@@ -147,11 +147,11 @@ L.geoJson(counties, {
     				click: zoomToFeature
     			});
     		}
- -    		
- -    		geojson = L.geoJson(counties, {
- -    			style: style,
- -    			onEachFeature: onEachFeature
- -    		}).addTo(map);
+    		
+    		geojson = L.geoJson(counties, {
+    			style: style,
+    			onEachFeature: onEachFeature
+    		}).addTo(map);
     		
     	var legend = L.control({position: 'bottomright'});
     	
