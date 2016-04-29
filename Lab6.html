@@ -1,0 +1,191 @@
+<html>
+  <head>
+	<title>2016 PA Primary Results Map</title>	  	
+    	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    	
+  </head>
+  
+  <style>
+  	body { background-image: url('http://sites.psu.edu/clb5923/wp-content/uploads/sites/15014/2015/04/election-20161.jpg')
+  	}
+  	h1 { font-family: Arial;
+  		font-size:50px;
+  		font-weight: bold;
+  		color: white;
+  		background-color: black;
+  		background-clip: content-box;
+  	}
+  	h2 { font-family: Arial;
+  		font-size: 30px;
+  		font-weight: bold;
+  		color: white;
+  		background-color: black;
+  		background-clip: content-box;
+  	}
+  		
+  	#map {width:1100px; height:800px;}
+  	
+  	.info {
+		padding: 6px 8px;
+		font: 14px/16px Arial, Helvetica, sans-serif;
+		background: black;
+		background: white;
+		box-shadow: 0 0 15px rgba(0,0,0,0.2);
+		border-radius: 5px;
+	}
+	.info h4 {
+		margin: 0 0 5px;
+		color: #777;
+		}
+	.legend {
+		text-align: left;
+		line-height: 18px;
+		color: #555;
+		}
+	.legend i {
+		width: 18px;
+		height: 18px;
+		float: left;
+		margin-right: 8px;
+		opacity: 0.7;
+		}
+	
+  </style>
+  
+  <body>
+    <center>
+      <h1> Pennsylvania 2016 Primary Results</h1>
+      <h2> This map provides voting results per county from the 2016 Pennsylvania Primary</h2>
+      <div id='map'></div>
+    </center>
+
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	<script type="text/javascript" src="counties.js"></script>
+	
+    
+    <script>
+   
+    var cities = new L.LayerGroup();
+    L.marker([40.596172, -75.472072]).bindPopup('<b>Allentown - </b> Population: 119,355').addTo(cities);
+    L.marker([40.62665, -75.367908]).bindPopup('<b>Bethlehem - </b> Population: 76,283').addTo(cities);
+    L.marker([42.116503, -80.073055]).bindPopup('<b>Erie - </b> Population: 101,513').addTo(cities);
+    L.marker([40.264032, -76.880679]).bindPopup('<b>Harrisburg - </b> Population: 50,144').addTo(cities);
+    L.marker([40.042144, -76.301009]).bindPopup('<b>Lancaster - </b> Population: 60,492').addTo(cities);
+    L.marker([40.143491, -74.85497]).bindPopup('<b>Levittown - </b> Population: 52,075').addTo(cities);
+    L.marker([40.007728, -75.133916]).bindPopup('<b>Philadelphia - </b> Population: 1,548,598').addTo(cities);
+    L.marker([40.439485, -79.976316]).bindPopup('<b>Pittsburgh - </b> Population: 304,633').addTo(cities);
+    L.marker([40.339938, -75.926615]).bindPopup('<b>Reading - </b> Population: 89,019').addTo(cities);
+    L.marker([41.404399, -75.664916]).bindPopup('<b>Scranton - </b> Population: 75,004').addTo(cities);
+    
+    var Attr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			Url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoiamthcm1hejYiLCJhIjoiY2ltM3ZjNTdjMDAwNXR6bTZ1NXU4M3A3NyJ9.b-8StdJWFpLK7LrLLermJg';
+	
+	var light = L.tileLayer(Url, {id: 'mapbox.light', attribution: Attr});
+	var dark = L.tileLayer(Url, {id: 'mapbox.dark', attribution: Attr});
+    var map = L.map('map', {center: [40.917956, -77.552434],
+    				zoom: 8,
+    				layers: [light, dark, cities]});
+    				
+    var baseMaps = {'Light' : light,
+    			'Dark': dark};
+    				
+    var overlay = {'Major Cities': cities};
+    
+    L.control.layers(baseMaps, overlay).addTo(map);
+    
+    //County information//
+    
+    var info = L.control();
+    	info.onAdd = function (map)
+    			{this._div = L.DomUtil.create('div', 'info');
+    			this.update();
+    			return this._div};
+    			
+    	info.update = function (Vote)
+    			{this._div.innerHTML = '<h4>County Results</h4>' + (Vote ?
+    				'<b>' + Vote.County + '</b><br />' + Vote.VoteTotal + ' votes '
+    				: 'Float over a County'); };
+    	info.addTo(map);
+    	
+    	//Chlorpleths//
+    	
+    	function getColor(d)
+    		{ return d > 66836 ? '#006d2c' :
+    			d > 28846 ? '#31a354' :
+    			d > 14304 ? '#74c476' :
+    			d > 9259 ? '#bae4b3' :
+    				    '#edf8e9';}
+    			
+    	function style(feature) { return {
+    				fillColor: getColor(feature.properties.VoteTotal), 
+    				weight:2,
+    				opacity: 1,
+    				color:'gray',
+    				dashArray: '2',
+    				fillOpacity:0.8,
+    				};} ;
+    				
+    	function highlightFeature(e) {
+    		var layer = e.target;
+    		
+    		layer.setStyle({
+    			weight: 5,
+    			color: '#f7f4f9',
+    			dashArray: '',
+    			fillOpacity: 0.8
+    		});
+    		
+    		if (!L.Browser.ie && !L.Browser.opera) {
+			layer.bringToFront();
+    		}
+    		
+    		info.update(layer.feature.properties);
+    		}
+    		
+    		var counties;
+    		
+    		function resetHighlight(e) {
+    			geojson.resetStyle(e.target);
+    			info.update();
+    		}
+    		
+    		function zoomToFeature(e) {
+    			map.fitBounds(e.target.getBounds());
+    		}
+    		
+    		function onEachFeature(feature, layer) {
+    			layer.on({mouseover: highlightFeature,
+    				mouseout: resetHighlight,
+    				click: zoomToFeature
+    			});
+    		}
+    		
+    		geojson = L.geoJson(counties, {
+    			style: style,
+    			onEachFeature: onEachFeature
+    		}).addTo(map);
+    		
+    	var legend = L.control({position: 'bottomright'});
+    	
+    	legend.onAdd = function (map)
+    			{
+    			var div = L.DomUtil.create('div', 'info legend'),
+    			grades = [0, 9259, 14304, 28846, 66836],
+    			labels = [];
+    			
+    	for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    	}
+    	return div;
+	};
+legend.addTo(map);
+	    
+	  
+	
+    </script>
+  </body>
+  
