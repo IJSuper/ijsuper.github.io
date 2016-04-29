@@ -78,12 +78,13 @@
 })
 map.addLayer(Thunderforest_Landscape);
     				
-    var overlay = {'Major Cities': cities};
+L.geoJson(counties, {
+    			style: style,
+    			onEachFeature: onEachFeature
+    		}).addTo(map);
     
-    L.control.layers(baseMaps, overlay).addTo(map);
-    
-    //County information//
-    
+//counties 
+
     var info = L.control();
     	info.onAdd = function (map)
     			{this._div = L.DomUtil.create('div', 'info');
