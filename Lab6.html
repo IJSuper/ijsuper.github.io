@@ -12,15 +12,13 @@
   		font-size:50px;
   		font-weight: bold;
   		color: white;
-  		background-color: black;
-  		background-clip: content-box;
+  		
   	}
   	h2 { font-family: Arial;
   		font-size: 30px;
   		font-weight: bold;
   		color: white;
-  		background-color: black;
-  		background-clip: content-box;
+  	
   	}
   		
   	#map {width:1100px; height:800px;}
@@ -148,12 +146,7 @@ L.geoJson(counties, {
     				mouseout: resetHighlight,
     				click: zoomToFeature
     			});
-    		}
-    		
-    		geojson = L.geoJson(counties, {
-    			style: style,
-    			onEachFeature: onEachFeature
-    		}).addTo(map);
+    	
     		
     	var legend = L.control({position: 'bottomright'});
     	
