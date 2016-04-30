@@ -108,7 +108,7 @@
 	
 		info.update = function (props) {
 			this._div.innerHTML = '<h4>PA Poverty Rate</h4>' +  (props ?
-				'<b>' + props.NAME + '</b><br />' + props.POVRATE + ' percent '
+				'<b>' + props.NAME + '</b><br />' + props.Minority + ' percent '
 				: 'Hover over a county');
 		};
 	
@@ -152,7 +152,7 @@
 		info.update(layer.feature.properties);
 	}
 	
-		var counties_id;
+		var PACounties;
 		
 		function resetHighlight(e) {
 		geojson.resetStyle(e.target);
@@ -171,7 +171,7 @@
 			});
 		}
 	
-		geojson = L.geoJson(counties_id, {
+		geojson = L.geoJson(PACounties, {
 			style: style,
 			onEachFeature: onEachFeature
 		}).addTo(map);
