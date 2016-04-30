@@ -89,9 +89,9 @@ L.geoJson(counties, {
     			this.update();
     			return this._div};
     			
-    	info.update = function (Vote)
-    			{this._div.innerHTML = '<h4>County Results</h4>' + (Vote ?
-    				'<b>' + Vote.County + '</b><br />' + Vote.VoteTotal + ' votes '
+    	info.update = function (props)
+    			{this._div.innerHTML = '<h4>Percent Minority</h4>' + (props ?
+    				'<b>' + props.Name + '</b><br />' + props.Minority + ' percent '
     				: 'Float over a County'); };
     	info.addTo(map);
     	
@@ -105,7 +105,7 @@ L.geoJson(counties, {
     				    '#edf8e9';}
     			
     	function style(feature) { return {
-    				fillColor: getColor(feature.properties.VoteTotal), 
+    				fillColor: getColor(feature.properties.Minority), 
     				weight:2,
     				opacity: 1,
     				color:'gray',
