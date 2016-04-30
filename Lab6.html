@@ -98,10 +98,10 @@ L.geoJson(counties, {
     	//Chlorpleths//
     	
     	function getColor(d)
-    		{ return d > 66836 ? '#006d2c' :
-    			d > 28846 ? '#31a354' :
-    			d > 14304 ? '#74c476' :
-    			d > 9259 ? '#bae4b3' :
+    		{ return d > 0.25 ? '#006d2c' :
+    			d > 0.1 ? '#31a354' :
+    			d > 0.05 ? '#74c476' :
+    			d > 0.018 ? '#bae4b3' :
     				    '#edf8e9';}
     			
     	function style(feature) { return {
