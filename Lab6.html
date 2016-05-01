@@ -64,7 +64,7 @@
     </center>
 
 	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-	<script type="text/javascript" src="counties.js"></script>
+	<script type="text/javascript" src="PACounties.js"></script>
 	
     
     <script>
@@ -110,14 +110,9 @@
     			this.update();
     			return this._div};
     			
-    	info.update = function (Vote)
-    			{this._div.innerHTML = '<h4>Votes per County</h4>' + (Vote ?
-    				 '<b>' + Vote.County + '</b><br />' + Vote.VoteTotal + '<b> -- Total</b>' + '<br />' + '<br />' + '<b>Sanders -- </b>' +
-    				Vote.Bernie + '<br />' + '<b>Clinton -- </b>' + Vote.Hillary + '<br />' + '<b>Trump -- </b>' +
-    				Vote.Trump + '<br />' + '<b>Cruz -- </b>' +	Vote.Cruz + '<br />' + '<b>Kasich -- </b>' + Vote.Kasich
-    				+ '<br />' + '<br />' + 
-    				'<b>Winner</b>' + '<br />' + '<b>Dem -- </b>' + Vote.DemWin + '<br />' 
-    				+ '<b>Rep -- </b>' + Vote.RepWin  
+    	info.update = function (data)
+    			{this._div.innerHTML = '<h4>Votes per County</h4>' + (data ?
+    				 '<b>' + data.Name + '</b><br />' + data.Minority
     				: 'Float over a County') ; };
     	info.addTo(map);
     	
@@ -156,7 +151,7 @@
     		info.update(layer.feature.properties);
     		}
     		
-    		var counties;
+    		var PACounties;
     		
     		function resetHighlight(e) {
     			geojson.resetStyle(e.target);
@@ -174,7 +169,7 @@
     			});
     		}
     		
-    		geojson = L.geoJson(counties, {
+    		geojson = L.geoJson(PACounties, {
     			style: style,
     			onEachFeature: onEachFeature
     		}).addTo(map);
