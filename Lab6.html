@@ -1,29 +1,32 @@
 <html>
   <head>
-	<title>Minority Counties, PA</title>	  	
+	<title>2016 PA Primary Results Map</title>	  	
     	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
     	
   </head>
   
   <style>
-  	body { background-color: black
+  	body { 	background-color: #4292c6;
   	}
-  	h1 { font-family: Arial;
-  		font-size:50px;
+  	p1 {font-family: Verdana;
+  	font-size: 12px;
+  	color: #084594 ;
+  	}
+  	
+  	h1 { font-family: Verdana ;
+  		font-size:55px;
   		font-weight: bold;
-  		color: white;
-  		background-color: black;
-  		background-clip: content-box;
+  		color: #084594;
   	}
-  	h2 { font-family: Arial;
+  	h2 { font-family: Verdana ;
   		font-size: 30px;
   		font-weight: bold;
-  		color: white;
-  		background-color: black;
-  		background-clip: content-box;
+  		color: #99000d;
   	}
-  		
-  	#map {width:1100px; height:800px;}
+  	
+  	#map {height: 70%;
+  		width: 70%;
+  	}
   	
   	.info {
 		padding: 6px 8px;
@@ -33,9 +36,9 @@
 		box-shadow: 0 0 15px rgba(0,0,0,0.2);
 		border-radius: 5px;
 	}
-	.info h4 {
+	.info h4 {font-size: 18px;
 		margin: 0 0 5px;
-		color: #777;
+		color: black;
 		}
 	.legend {
 		text-align: left;
@@ -54,58 +57,81 @@
   
   <body>
     <center>
-      <h1> Tittle</h1>
-      <h2> header </h2>
+	<p1> produced by Jeffrey Karmazin <br /><b><a href="http://www.politico.com/2016-election/results/map/president/pennsylvania" target="_blank"> Voting Data</a></b> </p1>    	
+      <h1> Pennsylvania 2016 Primary Results</h1>
+      <h2> This map provides total votes per county and results per county </h2>
       <div id='map'></div>
     </center>
 
 	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-	<script type="text/javascript" src="PACounties.js"></script>
+	<script type="text/javascript" src="counties.js"></script>
 	
     
     <script>
    
+    var cities = new L.LayerGroup();
+    L.marker([40.596172, -75.472072]).bindPopup('<b>Allentown - </b> Population: 119,355').addTo(cities);
+    L.marker([40.62665, -75.367908]).bindPopup('<b>Bethlehem - </b> Population: 76,283').addTo(cities);
+    L.marker([42.116503, -80.073055]).bindPopup('<b>Erie - </b> Population: 101,513').addTo(cities);
+    L.marker([40.264032, -76.880679]).bindPopup('<b>Harrisburg - </b> Population: 50,144').addTo(cities);
+    L.marker([40.042144, -76.301009]).bindPopup('<b>Lancaster - </b> Population: 60,492').addTo(cities);
+    L.marker([40.143491, -74.85497]).bindPopup('<b>Levittown - </b> Population: 52,075').addTo(cities);
+    L.marker([40.007728, -75.133916]).bindPopup('<b>Philadelphia - </b> Population: 1,548,598').addTo(cities);
+    L.marker([40.439485, -79.976316]).bindPopup('<b>Pittsburgh - </b> Population: 304,633').addTo(cities);
+    L.marker([40.339938, -75.926615]).bindPopup('<b>Reading - </b> Population: 89,019').addTo(cities);
+    L.marker([41.404399, -75.664916]).bindPopup('<b>Scranton - </b> Population: 75,004').addTo(cities);
     
-    var Thunderforest_Landscape = L.tileLayer('http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png', {
-	attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-});
+    var Attr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			Url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoiamthcm1hejYiLCJhIjoiY2ltM3ZjNTdjMDAwNXR6bTZ1NXU4M3A3NyJ9.b-8StdJWFpLK7LrLLermJg';
+
 	
-	var map = L.map('map', {
-  scrollWheelZoom: true,
-  center: [40.821581,-77.5121915],
-  zoom: 8,
-})
-map.addLayer(Thunderforest_Landscape);
+	var light = L.tileLayer(Url, {id: 'mapbox.light', attribution: Attr});
+	var dark = L.tileLayer(Url, {id: 'mapbox.dark', attribution: Attr});
+
+
+    var map = L.map('map', {center: [40.917956, -77.552434],
+    				zoom: 7,
+    				layers: [light, dark, cities]});
     				
-L.geoJson(PACounties, {
-    			style: style,
-    			onEachFeature: onEachFeature
-    		}).addTo(map);
+    var baseMaps = {'Light' : light,
+    			'Dark': dark};
+    				
+    var overlay = {'Major Cities': cities};
     
-//counties 
+    L.control.layers(baseMaps, overlay).addTo(map);
+    
+    //County information//
+    
     var info = L.control();
     	info.onAdd = function (map)
     			{this._div = L.DomUtil.create('div', 'info');
     			this.update();
     			return this._div};
     			
-    	info.update = function (props)
-    			{this._div.innerHTML = '<h4>Percent Minority</h4>' + (props ?
-    				'<b>' + props.Name + '</b><br />' + props.Minority + ' percent '
-    				: 'Float over a County'); };
+    	info.update = function (Vote)
+    			{this._div.innerHTML = '<h4>Votes per County</h4>' + (Vote ?
+    				 '<b>' + Vote.County + '</b><br />' + Vote.VoteTotal + '<b> -- Total</b>' + '<br />' + '<br />' + '<b>Sanders -- </b>' +
+    				Vote.Bernie + '<br />' + '<b>Clinton -- </b>' + Vote.Hillary + '<br />' + '<b>Trump -- </b>' +
+    				Vote.Trump + '<br />' + '<b>Cruz -- </b>' +	Vote.Cruz + '<br />' + '<b>Kasich -- </b>' + Vote.Kasich
+    				+ '<br />' + '<br />' + 
+    				'<b>Winner</b>' + '<br />' + '<b>Dem -- </b>' + Vote.DemWin + '<br />' 
+    				+ '<b>Rep -- </b>' + Vote.RepWin  
+    				: 'Float over a County') ; };
     	info.addTo(map);
     	
     	//Chlorpleths//
     	
     	function getColor(d)
-    		{ return d > 0.25 ? '#006d2c' :
-    			d > 0.1 ? '#31a354' :
-    			d > 0.05 ? '#74c476' :
-    			d > 0.018 ? '#bae4b3' :
-    				    '#edf8e9';}
+    		{ return d > 66836 ? '#54278f' :
+    			d > 28846 ? '#756bb1' :
+    			d > 14304 ? '#9e9ac8' :
+    			d > 9259 ? '#cbc9e2' :
+    				    '#f2f0f7';}
     			
     	function style(feature) { return {
-    				fillColor: getColor(feature.properties.Minority), 
+    				fillColor: getColor(feature.properties.VoteTotal), 
     				weight:2,
     				opacity: 1,
     				color:'gray',
@@ -130,7 +156,7 @@ L.geoJson(PACounties, {
     		info.update(layer.feature.properties);
     		}
     		
-    		var PACounties;
+    		var counties;
     		
     		function resetHighlight(e) {
     			geojson.resetStyle(e.target);
@@ -148,7 +174,7 @@ L.geoJson(PACounties, {
     			});
     		}
     		
-    		geojson = L.geoJson(PACounties, {
+    		geojson = L.geoJson(counties, {
     			style: style,
     			onEachFeature: onEachFeature
     		}).addTo(map);
@@ -166,8 +192,10 @@ L.geoJson(PACounties, {
             '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
             grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
     	}
+
     	return div;
 	};
+
 legend.addTo(map);
 	    
 	  
@@ -175,3 +203,4 @@ legend.addTo(map);
     </script>
   </body>
   
+</html>
