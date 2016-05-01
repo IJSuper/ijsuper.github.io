@@ -57,14 +57,14 @@
   
   <body>
     <center>
-	  	
+	<p1> produced by Jeffrey Karmazin <br /><b><a href="http://www.politico.com/2016-election/results/map/president/pennsylvania" target="_blank"> Voting Data</a></b> </p1>    	
       <h1> Pennsylvania 2016 Primary Results</h1>
       <h2> This map provides total votes per county and results per county </h2>
       <div id='map'></div>
     </center>
 
 	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-	<script type="text/javascript" src="PACounties.js"></script>
+	<script type="text/javascript" src="counties.js"></script>
 	
     
     <script>
@@ -110,9 +110,14 @@
     			this.update();
     			return this._div};
     			
-    	info.update = function (data)
-    			{this._div.innerHTML = '<h4>Votes per County</h4>' + (data ?
-    				 '<b>' + data.NAME + '</b><br />' + data.Minority
+    	info.update = function (Vote)
+    			{this._div.innerHTML = '<h4>Votes per County</h4>' + (Vote ?
+    				 '<b>' + Vote.County + '</b><br />' + Vote.VoteTotal + '<b> -- Total</b>' + '<br />' + '<br />' + '<b>Sanders -- </b>' +
+    				Vote.Bernie + '<br />' + '<b>Clinton -- </b>' + Vote.Hillary + '<br />' + '<b>Trump -- </b>' +
+    				Vote.Trump + '<br />' + '<b>Cruz -- </b>' +	Vote.Cruz + '<br />' + '<b>Kasich -- </b>' + Vote.Kasich
+    				+ '<br />' + '<br />' + 
+    				'<b>Winner</b>' + '<br />' + '<b>Dem -- </b>' + Vote.DemWin + '<br />' 
+    				+ '<b>Rep -- </b>' + Vote.RepWin  
     				: 'Float over a County') ; };
     	info.addTo(map);
     	
@@ -151,7 +156,7 @@
     		info.update(layer.feature.properties);
     		}
     		
-    		var PACounties;
+    		var counties;
     		
     		function resetHighlight(e) {
     			geojson.resetStyle(e.target);
@@ -169,7 +174,7 @@
     			});
     		}
     		
-    		geojson = L.geoJson(PACounties, {
+    		geojson = L.geoJson(counties, {
     			style: style,
     			onEachFeature: onEachFeature
     		}).addTo(map);
