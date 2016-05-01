@@ -114,10 +114,10 @@
     	//Chlorpleths//
     	
     	function getColor(d)
-    		{ return d > 66836 ? '#54278f' :
-    			d > 28846 ? '#756bb1' :
-    			d > 14304 ? '#9e9ac8' :
-    			d > 9259 ? '#cbc9e2' :
+    		{ return d > 0.25 ? '#54278f' :
+    			d > 0.1 ? '#756bb1' :
+    			d > 0.05 ? '#9e9ac8' :
+    			d > 0.019 ? '#cbc9e2' :
     				    '#f2f0f7';}
     			
     	function style(feature) { return {
@@ -174,7 +174,7 @@
     	legend.onAdd = function (map)
     			{
     			var div = L.DomUtil.create('div', 'info legend'),
-    			grades = [0, 9259, 14304, 28846, 66836],
+    			grades = [0.019, 0.05, 0.1, 0.25],
     			labels = [];
     			
     	for (var i = 0; i < grades.length; i++) {
