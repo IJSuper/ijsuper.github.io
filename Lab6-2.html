@@ -119,7 +119,7 @@
 			return 
 			       d > 0.25  ? '#f03b20' :
 		               d > 0.1  ? '#fd8d3c' :
-			       d > 0.5  ? '#fecc5c' :
+			       d > 0.05  ? '#fecc5c' :
 			       d > 0.019   ? '#ffffb2' :
 					  '#FFEDA0';
 		}
@@ -181,7 +181,7 @@
 		legend.onAdd = function (map) {
 	
 			var div = L.DomUtil.create('div', 'info legend'),
-				grades = [5.9, 8.9, 11.8, 14.5, 17.2],
+				grades = [0.019, 0.05, 0.1, 0.25],
 				labels = [],
 				from, to;
 	
